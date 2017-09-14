@@ -22,7 +22,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
         }
 
         public void setup(RecipeViewModelInterface viewModel) {
-            Log.i("WAT", "YOOOOOOO");
+
         }
     }
 

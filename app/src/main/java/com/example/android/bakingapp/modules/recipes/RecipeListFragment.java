@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.example.android.bakingapp.R;
 
+import butterknife.BindDimen;
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -19,6 +21,9 @@ import static android.support.v7.widget.RecyclerView.*;
 public class RecipeListFragment extends Fragment {
     @BindView(R.id.recipeRecyclerView)
     RecyclerView recipeRecyclerView;
+
+    @BindInt(R.integer.recipeListSpanCount)
+    int spanCount;
 
     public RecipeListFragment() { }
 
@@ -30,9 +35,11 @@ public class RecipeListFragment extends Fragment {
         Bundle savedInstanceState
     ) {
         final RecyclerView rootView = (RecyclerView) inflater.inflate(R.layout.recipe_list_fragment, container, false);
+        ButterKnife.bind(this, rootView);
+
         final RecipeListViewModelInterface viewModel = new RecipeListViewModel();
         final RecipeRecyclerViewAdapter adapter = new RecipeRecyclerViewAdapter(viewModel);
-        final GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 3);
+        final GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), spanCount);
 
         ButterKnife.bind(this, rootView);
         rootView.setAdapter(adapter);

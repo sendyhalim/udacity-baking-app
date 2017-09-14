@@ -5,6 +5,10 @@ import android.os.Bundle;
 
 import com.example.android.bakingapp.R;
 
+import butterknife.BindInt;
+import butterknife.BindString;
+import butterknife.ButterKnife;
+
 public class RecipeListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
