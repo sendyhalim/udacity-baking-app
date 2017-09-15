@@ -17,19 +17,33 @@ import butterknife.ButterKnife;
 
 public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder> {
     private ArrayList<Recipe> recipes;
+    private OnClickHandler onClickHandler;
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public interface OnClickHandler {
+        void onRecipeClicked(RecipeViewModelInterface viewModel);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.recipeNameTextView)
         TextView recipeNameTextView;
+
+        RecipeViewModelInterface viewModel;
 
         public ViewHolder(View view) {
             super(view);
 
             ButterKnife.bind(this, view);
+            view.setOnClickListener(this);
         }
 
         public void setup(RecipeViewModelInterface viewModel) {
+            this.viewModel = viewModel;
             recipeNameTextView.setText(viewModel.getName());
+        }
+
+        @Override
+        public void onClick(View view) {
+            onClickHandler.onRecipeClicked(viewModel);
         }
     }
 
@@ -55,5 +69,9 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
     public void setRecipes(ArrayList<Recipe> recipes) {
         this.recipes = recipes;
         notifyDataSetChanged();
+    }
+
+    public void setOnClickHandler(OnClickHandler handler) {
+        this.onClickHandler = handler;
     }
 }
