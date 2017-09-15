@@ -1,4 +1,4 @@
-package com.example.android.bakingapp.modules.steps;
+package com.example.android.bakingapp.modules.step;
 
 import java.net.URL;
 

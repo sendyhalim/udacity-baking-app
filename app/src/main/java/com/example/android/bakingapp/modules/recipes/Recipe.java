@@ -1,7 +1,7 @@
 package com.example.android.bakingapp.modules.recipes;
 
 import com.example.android.bakingapp.modules.ingredients.Ingredient;
-import com.example.android.bakingapp.modules.steps.RecipeStep;
+import com.example.android.bakingapp.modules.step.RecipeStep;
 
 import java.util.ArrayList;
 
