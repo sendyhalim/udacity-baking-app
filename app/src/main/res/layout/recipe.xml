@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="150dp">
     <TextView
+        android:id="@+id/recipeNameTextView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="WOTTTT" />
+        android:gravity="center" />
 </android.support.constraint.ConstraintLayout>

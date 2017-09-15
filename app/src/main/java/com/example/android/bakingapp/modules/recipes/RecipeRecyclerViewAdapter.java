@@ -5,22 +5,31 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.android.bakingapp.R;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder> {
     private ArrayList<Recipe> recipes;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.recipeNameTextView)
+        TextView recipeNameTextView;
+
         public ViewHolder(View view) {
             super(view);
+
+            ButterKnife.bind(this, view);
         }
 
         public void setup(RecipeViewModelInterface viewModel) {
-
+            recipeNameTextView.setText(viewModel.getName());
         }
     }
 

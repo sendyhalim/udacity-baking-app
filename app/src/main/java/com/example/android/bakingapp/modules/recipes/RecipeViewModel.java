@@ -6,4 +6,8 @@ public class RecipeViewModel implements RecipeViewModelInterface {
     public RecipeViewModel(Recipe recipe) {
         this.recipe = recipe;
     }
+
+    public String getName() {
+        return this.recipe.name;
+    }
 }
