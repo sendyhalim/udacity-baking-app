@@ -25,9 +25,6 @@ import retrofit2.Response;
 import static android.support.v7.widget.RecyclerView.*;
 
 public class RecipeListFragment extends Fragment implements RecipeRecyclerViewAdapter.OnClickHandler {
-    @BindView(R.id.recipeRecyclerView)
-    RecyclerView recipeRecyclerView;
-
     @BindInt(R.integer.recipeListSpanCount)
     int spanCount;
 
@@ -48,8 +45,7 @@ public class RecipeListFragment extends Fragment implements RecipeRecyclerViewAd
         ButterKnife.bind(this, rootView);
 
         final RecipeRecyclerViewAdapter adapter = new RecipeRecyclerViewAdapter();
-        final GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), spanCount);
-
+        final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), spanCount);
 
         adapter.setOnClickHandler(this);
         rootView.setAdapter(adapter);
