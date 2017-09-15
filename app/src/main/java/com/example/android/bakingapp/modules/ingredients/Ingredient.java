@@ -5,10 +5,10 @@ import com.google.gson.annotations.SerializedName;
 public class Ingredient {
     @SerializedName("ingredient")
     public final String name;
-    public final int quantity;
+    public final double quantity;
     public final String measure;
 
-    public Ingredient(String name, int quantity, String measure) {
+    public Ingredient(String name, double quantity, String measure) {
         this.name = name;
         this.quantity = quantity;
         this.measure = measure;

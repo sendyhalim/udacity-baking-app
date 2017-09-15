@@ -8,13 +8,11 @@ import android.view.ViewGroup;
 
 import com.example.android.bakingapp.R;
 
+import java.util.ArrayList;
+
 
 public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder> {
-    RecipeListViewModelInterface viewModel;
-
-    public RecipeRecyclerViewAdapter(RecipeListViewModelInterface viewModel) {
-        this.viewModel = viewModel;
-    }
+    private ArrayList<Recipe> recipes;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(View view) {
@@ -28,7 +26,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
 
     @Override
     public int getItemCount() {
-        return viewModel.count();
+        return recipes == null ? 0 : recipes.size();
     }
 
     @Override
@@ -42,6 +40,11 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.setup(viewModel.get(position));
+        holder.setup(new RecipeViewModel(recipes.get(position)));
+    }
+
+    public void setRecipes(ArrayList<Recipe> recipes) {
+        this.recipes = recipes;
+        notifyDataSetChanged();
     }
 }
