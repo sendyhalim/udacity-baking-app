@@ -1,8 +1,13 @@
 package com.example.android.bakingapp.modules.ingredients;
 
-public class IngredientViewModel implements IngredientViewModelInterface {
-    private Ingredient ingredient;
+import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
 
+@Parcel
+public class IngredientViewModel implements IngredientViewModelInterface {
+    public final Ingredient ingredient;
+
+    @ParcelConstructor
     public IngredientViewModel(Ingredient ingredient) {
         this.ingredient = ingredient;
     }

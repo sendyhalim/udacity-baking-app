@@ -1,20 +1,23 @@
 package com.example.android.bakingapp.modules.step;
 
-import java.net.URL;
+import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
 
+@Parcel
 public class RecipeStep {
     public final int id;
     public final String description;
     public final String shortDescription;
-    public final URL videoUrl;
-    public final URL thumbnailUrl;
+    public final String videoUrl;
+    public final String thumbnailUrl;
 
+    @ParcelConstructor
     public RecipeStep(
         int id,
         String description,
         String shortDescription,
-        URL videoUrl,
-        URL thumbnailUrl
+        String videoUrl,
+        String thumbnailUrl
     ) {
         this.id = id;
         this.description = description;
