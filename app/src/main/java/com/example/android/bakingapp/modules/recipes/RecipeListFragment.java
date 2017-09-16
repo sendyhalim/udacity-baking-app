@@ -1,6 +1,7 @@
 package com.example.android.bakingapp.modules.recipes;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,11 +14,11 @@ import android.view.ViewGroup;
 
 import com.example.android.bakingapp.R;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 
-import butterknife.BindDimen;
 import butterknife.BindInt;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -68,6 +69,9 @@ public class RecipeListFragment extends Fragment implements RecipeRecyclerViewAd
 
     @Override
     public void onRecipeClicked(RecipeViewModelInterface viewModel) {
-        Log.i(getClass().toString(), viewModel.getName());
+        Intent intent = new Intent(getContext(), RecipeDetailActivity.class);
+        intent.putExtra(Intent.EXTRA_INTENT, Parcels.wrap(viewModel));
+
+        startActivity(intent);
     }
 }
