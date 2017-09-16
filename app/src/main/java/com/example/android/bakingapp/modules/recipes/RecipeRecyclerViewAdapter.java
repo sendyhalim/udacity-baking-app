@@ -58,11 +58,11 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
             .from(parent.getContext())
             .inflate(R.layout.recipe, parent, false);
 
-        return new ViewHolder(view);
+        return new RecipeRecyclerViewAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(RecipeRecyclerViewAdapter.ViewHolder holder, int position) {
         holder.setup(new RecipeViewModel(recipes.get(position)));
     }
 

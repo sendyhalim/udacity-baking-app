@@ -18,12 +18,18 @@ import static android.support.v7.widget.RecyclerView.*;
 public class IngredientListFragment extends Fragment {
     IngredientRecyclerViewAdapter adapter;
 
+    ArrayList<IngredientViewModelInterface> ingredients;
+
+    public IngredientListFragment(ArrayList<IngredientViewModelInterface> ingredients) {
+        this.ingredients = ingredients;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new IngredientRecyclerViewAdapter();
+        adapter = new IngredientRecyclerViewAdapter(ingredients);
         LayoutManager layoutManager = new LinearLayoutManager(
             getContext(),
             LinearLayoutManager.VERTICAL,
@@ -39,10 +45,5 @@ public class IngredientListFragment extends Fragment {
         rootView.setLayoutManager(layoutManager);
 
         return rootView;
-    }
-
-
-    public void setIngredients(ArrayList<IngredientViewModelInterface> ingredients) {
-        adapter.setIngredients(ingredients);
     }
 }
