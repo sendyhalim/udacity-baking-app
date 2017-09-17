@@ -16,26 +16,12 @@ import butterknife.ButterKnife;
 public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<IngredientRecyclerViewAdapter.ViewHolder> {
     private ArrayList<IngredientViewModelInterface> ingredients;
 
-    public IngredientRecyclerViewAdapter(ArrayList<IngredientViewModelInterface> ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.ingredientNameTextView)
-        TextView ingredientNameTextView;
-
-        public ViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-
-        public void setup(IngredientViewModelInterface viewModel) {
-            ingredientNameTextView.setText(viewModel.getIngredientDetail());
-        }
+    public IngredientRecyclerViewAdapter() {
+        this.ingredients = new ArrayList<>();
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public IngredientRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater
             .from(parent.getContext())
             .inflate(R.layout.ingredient, parent, false);
@@ -51,5 +37,24 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
     @Override
     public int getItemCount() {
         return ingredients.size();
+    }
+
+    public void setIngredients(ArrayList<IngredientViewModelInterface> ingredients) {
+        this.ingredients = ingredients;
+        notifyDataSetChanged();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.ingredientNameTextView)
+        TextView ingredientNameTextView;
+
+        public ViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setup(IngredientViewModelInterface viewModel) {
+            ingredientNameTextView.setText(viewModel.getIngredientDetail());
+        }
     }
 }

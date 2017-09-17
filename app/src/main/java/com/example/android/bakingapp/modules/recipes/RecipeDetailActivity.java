@@ -10,6 +10,8 @@ import android.util.Log;
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.modules.ingredients.IngredientListFragment;
 import com.example.android.bakingapp.modules.ingredients.IngredientViewModelInterface;
+import com.example.android.bakingapp.modules.step.RecipeStepListFragment;
+import com.example.android.bakingapp.modules.step.RecipeStepViewModelInterface;
 
 import org.parceler.Parcels;
 
@@ -26,13 +28,28 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         if (intent.hasExtra(Intent.EXTRA_INTENT)) {
             RecipeViewModelInterface viewModel = Parcels.unwrap(intent.getParcelableExtra(Intent.EXTRA_INTENT));
+
+            // Setup ingredient list fragment
             ArrayList<IngredientViewModelInterface> ingredients = (ArrayList<IngredientViewModelInterface>) viewModel.getIngredients();
-            IngredientListFragment ingredientListFragment = new IngredientListFragment(ingredients);
+            IngredientListFragment ingredientListFragment = new IngredientListFragment();
 
             getFragmentManager()
                 .beginTransaction()
                 .add(R.id.ingredientListFragmentContainer, ingredientListFragment)
                 .commit();
+
+            ingredientListFragment.setIngredients(ingredients);
+
+            // Setup recipe step list fragment
+            ArrayList<RecipeStepViewModelInterface> steps = (ArrayList<RecipeStepViewModelInterface>) viewModel.getSteps();
+            RecipeStepListFragment recipeStepListFragment = new RecipeStepListFragment();
+
+            getFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.recipeStepListFragmentContainer, recipeStepListFragment)
+                    .commit();
+
+            recipeStepListFragment.setSteps(steps);
         }
     }
 }

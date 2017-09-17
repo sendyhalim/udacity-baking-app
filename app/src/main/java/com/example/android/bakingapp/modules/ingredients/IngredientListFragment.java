@@ -22,27 +22,21 @@ public class IngredientListFragment extends Fragment {
     @BindView(R.id.ingredientRecyclerView)
     RecyclerView ingredientRecyclerView;
 
-    IngredientRecyclerViewAdapter adapter;
-
     ArrayList<IngredientViewModelInterface> ingredients;
-
-    public IngredientListFragment(ArrayList<IngredientViewModelInterface> ingredients) {
-        this.ingredients = ingredients;
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         View rootView = inflater.inflate(
             R.layout.ingredient_list_fragment,
             container,
             false
         );
+
         ButterKnife.bind(this, rootView);
 
-
-        adapter = new IngredientRecyclerViewAdapter(ingredients);
+        IngredientRecyclerViewAdapter adapter = new IngredientRecyclerViewAdapter();
+        adapter.setIngredients(ingredients);
         LayoutManager layoutManager = new LinearLayoutManager(
             getContext(),
             LinearLayoutManager.VERTICAL,
@@ -53,5 +47,9 @@ public class IngredientListFragment extends Fragment {
         ingredientRecyclerView.setLayoutManager(layoutManager);
 
         return rootView;
+    }
+
+    public void setIngredients(ArrayList<IngredientViewModelInterface> ingredients) {
+        this.ingredients = ingredients;
     }
 }

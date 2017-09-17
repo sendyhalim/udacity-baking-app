@@ -11,4 +11,13 @@ public class RecipeStepViewModel implements RecipeStepViewModelInterface {
     public RecipeStepViewModel(RecipeStep recipeStep) {
         this.recipeStep = recipeStep;
     }
+
+    public String getDescription() {
+        return recipeStep.description;
+    }
+
+    @Override
+    public String getShortDescription() {
+        return recipeStep.shortDescription;
+    }
 }

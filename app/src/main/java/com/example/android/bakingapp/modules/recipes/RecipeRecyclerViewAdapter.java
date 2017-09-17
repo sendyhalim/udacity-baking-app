@@ -1,7 +1,7 @@
 package com.example.android.bakingapp.modules.recipes;
 
+import android.support.v4.app.LoaderManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +18,34 @@ import butterknife.ButterKnife;
 public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder> {
     private ArrayList<Recipe> recipes;
     private OnClickHandler onClickHandler;
+
+    @Override
+    public int getItemCount() {
+        return recipes.size();
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater
+            .from(parent.getContext())
+            .inflate(R.layout.recipe, parent, false);
+
+        return new RecipeRecyclerViewAdapter.ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(RecipeRecyclerViewAdapter.ViewHolder holder, int position) {
+        holder.setup(new RecipeViewModel(recipes.get(position)));
+    }
+
+    public void setRecipes(ArrayList<Recipe> recipes) {
+        this.recipes = recipes;
+        notifyDataSetChanged();
+    }
+
+    public void setOnClickHandler(OnClickHandler handler) {
+        this.onClickHandler = handler;
+    }
 
     public interface OnClickHandler {
         void onRecipeClicked(RecipeViewModelInterface viewModel);
@@ -45,33 +73,5 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
         public void onClick(View view) {
             onClickHandler.onRecipeClicked(viewModel);
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return recipes == null ? 0 : recipes.size();
-    }
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater
-            .from(parent.getContext())
-            .inflate(R.layout.recipe, parent, false);
-
-        return new RecipeRecyclerViewAdapter.ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(RecipeRecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.setup(new RecipeViewModel(recipes.get(position)));
-    }
-
-    public void setRecipes(ArrayList<Recipe> recipes) {
-        this.recipes = recipes;
-        notifyDataSetChanged();
-    }
-
-    public void setOnClickHandler(OnClickHandler handler) {
-        this.onClickHandler = handler;
     }
 }

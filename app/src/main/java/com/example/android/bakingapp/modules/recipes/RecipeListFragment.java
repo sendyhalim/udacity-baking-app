@@ -49,6 +49,7 @@ public class RecipeListFragment extends Fragment implements RecipeRecyclerViewAd
         final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), spanCount);
 
         adapter.setOnClickHandler(this);
+        adapter.setRecipes(new ArrayList<Recipe>());
         rootView.setAdapter(adapter);
         rootView.setLayoutManager(layoutManager);
 
