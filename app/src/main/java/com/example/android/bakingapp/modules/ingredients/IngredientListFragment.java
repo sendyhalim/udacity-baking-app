@@ -13,9 +13,15 @@ import com.example.android.bakingapp.R;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static android.support.v7.widget.RecyclerView.*;
 
 public class IngredientListFragment extends Fragment {
+    @BindView(R.id.ingredientRecyclerView)
+    RecyclerView ingredientRecyclerView;
+
     IngredientRecyclerViewAdapter adapter;
 
     ArrayList<IngredientViewModelInterface> ingredients;
@@ -28,6 +34,13 @@ public class IngredientListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        View rootView = inflater.inflate(
+            R.layout.ingredient_list_fragment,
+            container,
+            false
+        );
+        ButterKnife.bind(this, rootView);
+
 
         adapter = new IngredientRecyclerViewAdapter(ingredients);
         LayoutManager layoutManager = new LinearLayoutManager(
@@ -35,14 +48,9 @@ public class IngredientListFragment extends Fragment {
             LinearLayoutManager.VERTICAL,
             false
         );
-        RecyclerView rootView = (RecyclerView) inflater.inflate(
-            R.layout.ingredient_list_fragment,
-            container,
-            false
-        );
 
-        rootView.setAdapter(adapter);
-        rootView.setLayoutManager(layoutManager);
+        ingredientRecyclerView.setAdapter(adapter);
+        ingredientRecyclerView.setLayoutManager(layoutManager);
 
         return rootView;
     }

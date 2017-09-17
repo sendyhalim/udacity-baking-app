@@ -30,7 +30,7 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
         }
 
         public void setup(IngredientViewModelInterface viewModel) {
-            ingredientNameTextView.setText(viewModel.getName());
+            ingredientNameTextView.setText(viewModel.getIngredientDetail());
         }
     }
 

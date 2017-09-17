@@ -13,17 +13,7 @@ public class IngredientViewModel implements IngredientViewModelInterface {
     }
 
     @Override
-    public String getName() {
-        return this.ingredient.name;
-    }
-
-    @Override
-    public String getQuantity() {
-        return Double.toString(this.ingredient.quantity);
-    }
-
-    @Override
-    public String getMeasure() {
-        return this.ingredient.measure;
+    public String getIngredientDetail() {
+        return String.format("%s %s of %s", ingredient.quantity, ingredient.measure, ingredient.name);
     }
 }
