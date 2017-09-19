@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.modules.ingredients.IngredientListFragment;
 import com.example.android.bakingapp.modules.ingredients.IngredientViewModelInterface;
+import com.example.android.bakingapp.modules.step.RecipeStepDetailFragment;
 import com.example.android.bakingapp.modules.step.RecipeStepListFragment;
 import com.example.android.bakingapp.modules.step.RecipeStepViewModelInterface;
 
@@ -17,12 +19,14 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class RecipeDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipe_detail);
-
 
         Intent intent = getIntent();
 
@@ -45,11 +49,20 @@ public class RecipeDetailActivity extends AppCompatActivity {
             RecipeStepListFragment recipeStepListFragment = new RecipeStepListFragment();
 
             getFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.recipeStepListFragmentContainer, recipeStepListFragment)
-                    .commit();
+                .beginTransaction()
+                .add(R.id.recipeStepListFragmentContainer, recipeStepListFragment)
+                .commit();
 
             recipeStepListFragment.setSteps(steps);
+
+            if (findViewById(R.id.recipeStepDetailFragmentContainer)  != null) {
+                RecipeStepDetailFragment recipeStepDetailFragment = new RecipeStepDetailFragment();
+
+                getFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.recipeStepDetailFragmentContainer, recipeStepDetailFragment)
+                    .commit();
+            }
         }
     }
 }
