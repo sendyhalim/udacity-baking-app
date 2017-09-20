@@ -21,6 +21,8 @@ public class RecipeStepListFragment extends Fragment {
     RecyclerView recipeStepRecyclerView;
 
     ArrayList<RecipeStepViewModelInterface> steps;
+    RecipeStepRecyclerViewAdapter adapter;
+    RecipeStepRecyclerViewAdapter.OnClickHandler onRecipeStepClickHandler;
 
     @Nullable
     @Override
@@ -28,8 +30,10 @@ public class RecipeStepListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.recipe_step_list_fragment, container, false);
         ButterKnife.bind(this, rootView);
 
-        RecipeStepRecyclerViewAdapter adapter = new RecipeStepRecyclerViewAdapter();
+        adapter = new RecipeStepRecyclerViewAdapter();
         adapter.setSteps(steps);
+        adapter.setOnClickHandler(onRecipeStepClickHandler);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(
             getContext(),
             LinearLayoutManager.VERTICAL,
@@ -44,5 +48,8 @@ public class RecipeStepListFragment extends Fragment {
 
     public void setSteps(ArrayList<RecipeStepViewModelInterface> steps) {
         this.steps = steps;
+    }
+    public void setOnRecipeStepClickHandler(RecipeStepRecyclerViewAdapter.OnClickHandler onRecipeStepClickHandler) {
+        this.onRecipeStepClickHandler = onRecipeStepClickHandler;
     }
 }

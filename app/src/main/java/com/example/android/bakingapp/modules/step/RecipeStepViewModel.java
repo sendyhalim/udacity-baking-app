@@ -26,7 +26,6 @@ public class RecipeStepViewModel implements RecipeStepViewModelInterface {
 
     @Override
     public Uri getVideoUri() {
-        Log.i("WUT", recipeStep.videoURL);
         return Uri.parse(recipeStep.videoURL);
     }
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.modules.recipes.Recipe;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ import butterknife.ButterKnife;
 
 public class RecipeStepRecyclerViewAdapter extends RecyclerView.Adapter<RecipeStepRecyclerViewAdapter.ViewHolder> {
     ArrayList<RecipeStepViewModelInterface> steps;
+    RecipeStepRecyclerViewAdapter.OnClickHandler onClickHandler;
 
     public RecipeStepRecyclerViewAdapter() {
         this.steps = new ArrayList<>();
@@ -39,22 +41,40 @@ public class RecipeStepRecyclerViewAdapter extends RecyclerView.Adapter<RecipeSt
         return steps.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public void setSteps(ArrayList<RecipeStepViewModelInterface> steps) {
+        this.steps = steps;
+        notifyDataSetChanged();
+    }
+
+    public void setOnClickHandler(OnClickHandler onClickHandler) {
+        this.onClickHandler = onClickHandler;
+    }
+
+    public interface OnClickHandler {
+        public void onRecipeStepClicked(RecipeStepViewModelInterface step);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.recipeStepShortDescription)
         TextView recipeStepShortDescriptionTextView;
+
+        RecipeStepViewModelInterface step;
 
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+
+            view.setOnClickListener(this);
         }
 
         public void setup(RecipeStepViewModelInterface step) {
+            this.step = step;
             recipeStepShortDescriptionTextView.setText(step.getShortDescription());
         }
-    }
 
-    public void setSteps(ArrayList<RecipeStepViewModelInterface> steps) {
-        this.steps = steps;
-        notifyDataSetChanged();
+        @Override
+        public void onClick(View view) {
+            onClickHandler.onRecipeStepClicked(step);
+        }
     }
 }
