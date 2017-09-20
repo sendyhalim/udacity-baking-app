@@ -8,21 +8,21 @@ public class RecipeStep {
     public final int id;
     public final String description;
     public final String shortDescription;
-    public final String videoUrl;
-    public final String thumbnailUrl;
+    public final String videoURL;
+    public final String thumbnailURL;
 
     @ParcelConstructor
     public RecipeStep(
         int id,
         String description,
         String shortDescription,
-        String videoUrl,
-        String thumbnailUrl
+        String videoURL,
+        String thumbnailURL
     ) {
         this.id = id;
         this.description = description;
         this.shortDescription = shortDescription;
-        this.videoUrl = videoUrl;
-        this.thumbnailUrl = thumbnailUrl;
+        this.videoURL = videoURL;
+        this.thumbnailURL = thumbnailURL;
     }
 }

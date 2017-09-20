@@ -56,11 +56,13 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
             if (findViewById(R.id.recipeStepDetailFragmentContainer)  != null) {
                 RecipeStepDetailFragment recipeStepDetailFragment = new RecipeStepDetailFragment();
+                recipeStepDetailFragment.setRecipeStep(steps.get(0));
 
                 getFragmentManager()
                     .beginTransaction()
                     .add(R.id.recipeStepDetailFragmentContainer, recipeStepDetailFragment)
                     .commit();
+
             }
         }
     }

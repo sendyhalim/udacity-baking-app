@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        android:id="@+id/videoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

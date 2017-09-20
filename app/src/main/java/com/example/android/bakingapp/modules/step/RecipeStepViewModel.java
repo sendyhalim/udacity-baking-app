@@ -1,5 +1,8 @@
 package com.example.android.bakingapp.modules.step;
 
+import android.net.Uri;
+import android.util.Log;
+
 import org.parceler.Parcel;
 import org.parceler.ParcelConstructor;
 
@@ -19,5 +22,11 @@ public class RecipeStepViewModel implements RecipeStepViewModelInterface {
     @Override
     public String getShortDescription() {
         return recipeStep.shortDescription;
+    }
+
+    @Override
+    public Uri getVideoUri() {
+        Log.i("WUT", recipeStep.videoURL);
+        return Uri.parse(recipeStep.videoURL);
     }
 }
