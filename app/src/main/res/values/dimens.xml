@@ -4,4 +4,5 @@
     <dimen name="headerBodyMargin">5dp</dimen>
     <dimen name="textFontSize">18sp</dimen>
     <dimen name="headerFontSize">24sp</dimen>
+    <dimen name="viewMargin">5dp</dimen>
 </resources>

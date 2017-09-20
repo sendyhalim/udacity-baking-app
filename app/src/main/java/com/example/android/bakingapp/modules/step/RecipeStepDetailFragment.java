@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.android.bakingapp.R;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -28,12 +29,17 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import org.w3c.dom.Text;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecipeStepDetailFragment extends Fragment {
     @BindView(R.id.videoContainer)
     SimpleExoPlayerView videoContainer;
+
+    @BindView(R.id.recipeStepDescriptionTextView)
+    TextView recipeStepDescriptionTextView;
 
     RecipeStepViewModelInterface step;
 
@@ -57,6 +63,16 @@ public class RecipeStepDetailFragment extends Fragment {
     }
 
     private void setup() {
+        if (step.getVideoUri() != null) {
+            setupVideoPlayer();
+        } else {
+            videoContainer.setVisibility(View.INVISIBLE);
+        }
+
+        recipeStepDescriptionTextView.setText(step.getDescription());
+    }
+
+    private void setupVideoPlayer() {
         // 1. Create a default TrackSelector
         Handler mainHandler = new Handler();
         Context context = getContext();
