@@ -22,12 +22,12 @@ public class RecipeStepDetailFragment extends Fragment {
     ) {
         View view = inflater.inflate(R.layout.recipe_step_detail_fragment, container, false);
         ButterKnife.bind(this, view);
-        Log.i("MAA", "MOOOOOO");
 
         return view;
     }
 
     public void setRecipeStep(RecipeStepViewModelInterface step) {
+
 
     }
 }
