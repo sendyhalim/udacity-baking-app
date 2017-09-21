@@ -1,9 +1,12 @@
 package com.example.android.bakingapp.modules.recipes;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -27,6 +30,7 @@ public class RecipeDetailActivity extends AppCompatActivity
     implements RecipeStepRecyclerViewAdapter.OnClickHandler {
 
     RecipeStepDetailFragment recipeStepDetailFragment;
+    RecipeViewModelInterface recipeViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,34 +39,36 @@ public class RecipeDetailActivity extends AppCompatActivity
 
         Intent intent = getIntent();
 
-        if (intent.hasExtra(Intent.EXTRA_INTENT)) {
-            RecipeViewModelInterface viewModel = Parcels.unwrap(intent.getParcelableExtra(Intent.EXTRA_INTENT));
+        if (intent.hasExtra(Intent.EXTRA_INTENT) && savedInstanceState == null) {
+            recipeViewModel = Parcels.unwrap(intent.getParcelableExtra(Intent.EXTRA_INTENT));
+            FragmentManager fragmentManager = getFragmentManager();
 
             // Setup ingredient list fragment
-            ArrayList<IngredientViewModelInterface> ingredients = (ArrayList<IngredientViewModelInterface>) viewModel.getIngredients();
+            ArrayList<IngredientViewModelInterface> ingredients = (ArrayList<IngredientViewModelInterface>) recipeViewModel.getIngredients();
+
             IngredientListFragment ingredientListFragment = new IngredientListFragment();
 
             getFragmentManager()
-                .beginTransaction()
-                .add(R.id.ingredientListFragmentContainer, ingredientListFragment)
-                .commit();
+                    .beginTransaction()
+                    .replace(R.id.ingredientListFragmentContainer, ingredientListFragment, IngredientListFragment.class.toString())
+                    .commit();
 
             ingredientListFragment.setIngredients(ingredients);
 
             // Setup recipe step list fragment
-            ArrayList<RecipeStepViewModelInterface> steps = (ArrayList<RecipeStepViewModelInterface>) viewModel.getSteps();
+            ArrayList<RecipeStepViewModelInterface> steps = (ArrayList<RecipeStepViewModelInterface>) recipeViewModel.getSteps();
             RecipeStepListFragment recipeStepListFragment = new RecipeStepListFragment();
             recipeStepListFragment.setOnRecipeStepClickHandler(this);
 
             getFragmentManager()
-                .beginTransaction()
-                .add(R.id.recipeStepListFragmentContainer, recipeStepListFragment)
-                .commit();
+                    .beginTransaction()
+                    .replace(R.id.recipeStepListFragmentContainer, recipeStepListFragment)
+                    .commit();
 
             recipeStepListFragment.setSteps(steps);
 
             if (findViewById(R.id.recipeStepDetailFragmentContainer)  != null) {
-                setupRecipeStepDetailFragment(steps.get(0));
+                 setupRecipeStepDetailFragment(steps.get(0));
             }
         }
     }

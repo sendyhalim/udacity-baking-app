@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +28,15 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import org.parceler.Parcels;
 import org.w3c.dom.Text;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecipeStepDetailFragment extends Fragment {
+    public static final String BUNDLE_DATA_KEY = "RECIPE_STEP_DATA";
+
     @BindView(R.id.videoContainer)
     SimpleExoPlayerView videoContainer;
 
@@ -42,6 +44,13 @@ public class RecipeStepDetailFragment extends Fragment {
     TextView recipeStepDescriptionTextView;
 
     RecipeStepViewModelInterface step;
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(BUNDLE_DATA_KEY, Parcels.wrap(step));
+    }
 
     @Nullable
     @Override
@@ -52,6 +61,10 @@ public class RecipeStepDetailFragment extends Fragment {
     ) {
         View view = inflater.inflate(R.layout.recipe_step_detail_fragment, container, false);
         ButterKnife.bind(this, view);
+
+        if (savedInstanceState != null) {
+            step = Parcels.unwrap(savedInstanceState.getParcelable(BUNDLE_DATA_KEY));
+        }
 
         setup();
 
