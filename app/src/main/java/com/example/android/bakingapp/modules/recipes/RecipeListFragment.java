@@ -13,11 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.modules.common.ui.ItemOffsetDecoration;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import butterknife.BindDimen;
 import butterknife.BindInt;
 import butterknife.ButterKnife;
 import retrofit2.Callback;
@@ -47,6 +49,8 @@ public class RecipeListFragment extends Fragment implements RecipeRecyclerViewAd
 
         final RecipeRecyclerViewAdapter adapter = new RecipeRecyclerViewAdapter();
         final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), spanCount);
+
+        rootView.addItemDecoration(new ItemOffsetDecoration(getContext(), R.dimen.collectionItemMargin));
 
         adapter.setOnClickHandler(this);
         adapter.setRecipes(new ArrayList<Recipe>());
