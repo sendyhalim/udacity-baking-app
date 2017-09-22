@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 
 
 public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder> {
-    private ArrayList<Recipe> recipes;
+    private ArrayList<RecipeViewModelInterface> recipes;
     private OnClickHandler onClickHandler;
 
     @Override
@@ -35,10 +35,10 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
 
     @Override
     public void onBindViewHolder(RecipeRecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.setup(new RecipeViewModel(recipes.get(position)));
+        holder.setup(position, recipes.get(position));
     }
 
-    public void setRecipes(ArrayList<Recipe> recipes) {
+    public void setRecipes(ArrayList<RecipeViewModelInterface> recipes) {
         this.recipes = recipes;
         notifyDataSetChanged();
     }
@@ -48,7 +48,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
     }
 
     public interface OnClickHandler {
-        void onRecipeClicked(RecipeViewModelInterface viewModel);
+        void onRecipeClicked(int position, RecipeViewModelInterface viewModel);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -58,6 +58,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
         @BindView(R.id.recipeStepCountTextView)
         TextView recipeStepCountTextView;
 
+        int position;
         RecipeViewModelInterface viewModel;
 
         public ViewHolder(View view) {
@@ -67,8 +68,9 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
             view.setOnClickListener(this);
         }
 
-        public void setup(RecipeViewModelInterface viewModel) {
+        public void setup(int position, RecipeViewModelInterface viewModel) {
             this.viewModel = viewModel;
+            this.position = position;
 
             recipeNameTextView.setText(viewModel.getName());
             recipeStepCountTextView.setText(viewModel.getRecipeCountText());
@@ -76,7 +78,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
 
         @Override
         public void onClick(View view) {
-            onClickHandler.onRecipeClicked(viewModel);
+            onClickHandler.onRecipeClicked(position, viewModel);
         }
     }
 }

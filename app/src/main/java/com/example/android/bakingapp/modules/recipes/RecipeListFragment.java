@@ -32,6 +32,7 @@ public class RecipeListFragment extends Fragment implements RecipeRecyclerViewAd
     int spanCount;
 
     RecipeAPI api;
+    ArrayList<RecipeViewModelInterface> recipes;
 
     public RecipeListFragment() {
         api = new RecipeAPI();
@@ -53,14 +54,20 @@ public class RecipeListFragment extends Fragment implements RecipeRecyclerViewAd
         rootView.addItemDecoration(new ItemOffsetDecoration(getContext(), R.dimen.collectionItemMargin));
 
         adapter.setOnClickHandler(this);
-        adapter.setRecipes(new ArrayList<Recipe>());
+        adapter.setRecipes(new ArrayList<RecipeViewModelInterface>());
         rootView.setAdapter(adapter);
         rootView.setLayoutManager(layoutManager);
 
         api.recipes().enqueue(new Callback<ArrayList<Recipe>>() {
             @Override
             public void onResponse(retrofit2.Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
-                adapter.setRecipes(response.body());
+                recipes = new ArrayList<RecipeViewModelInterface>();
+
+                for (Recipe recipe: response.body()) {
+                    recipes.add(new RecipeViewModel(recipe));
+                }
+
+                adapter.setRecipes(recipes);
             }
 
             @Override
@@ -73,9 +80,10 @@ public class RecipeListFragment extends Fragment implements RecipeRecyclerViewAd
     }
 
     @Override
-    public void onRecipeClicked(RecipeViewModelInterface viewModel) {
+    public void onRecipeClicked(int clickedIndex, RecipeViewModelInterface viewModel) {
         Intent intent = new Intent(getContext(), RecipeDetailActivity.class);
-        intent.putExtra(Intent.EXTRA_INTENT, Parcels.wrap(viewModel));
+        intent.putExtra(Intent.EXTRA_INTENT, Parcels.wrap(recipes));
+        intent.putExtra(Intent.EXTRA_INDEX, clickedIndex);
 
         startActivity(intent);
     }

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
         <ScrollView
+            android:id="@+id/recipeListScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
                 <android.support.constraint.ConstraintLayout
@@ -23,6 +24,20 @@
                             android:layout_height="wrap_content"
                             app:layout_constraintTop_toBottomOf="@id/ingredientListFragmentContainer"
                             android:layout_margin="@dimen/fragmentContainerMargin" />
+
+                        <Button
+                            android:id="@+id/toPreviousRecipeButton"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/recipeStepListFragmentContainer"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                        <Button
+                            android:id="@+id/toNextRecipeButton"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/recipeStepListFragmentContainer"
+                            app:layout_constraintRight_toRightOf="parent" />
                 </android.support.constraint.ConstraintLayout>
         </ScrollView>
 </android.support.constraint.ConstraintLayout>
