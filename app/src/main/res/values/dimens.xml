@@ -6,5 +6,5 @@
     <dimen name="headerFontSize">24sp</dimen>
     <dimen name="viewMargin">5dp</dimen>
     <dimen name="collectionItemMargin">10dp</dimen>
-    <dimen name="cardViewMinHeight">100dp</dimen>
+    <dimen name="cardViewMinHeight">70dp</dimen>
 </resources>

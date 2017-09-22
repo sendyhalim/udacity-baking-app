@@ -38,6 +38,10 @@ public class RecipeViewModel implements RecipeViewModelInterface {
         return this.recipe.name;
     }
 
+    public String getRecipeCountText() {
+        return steps.size() + " Steps";
+    }
+
     public ArrayList<? extends IngredientViewModelInterface> getIngredients() {
         return this.ingredients;
     }

@@ -55,6 +55,9 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
         @BindView(R.id.recipeNameTextView)
         TextView recipeNameTextView;
 
+        @BindView(R.id.recipeStepCountTextView)
+        TextView recipeStepCountTextView;
+
         RecipeViewModelInterface viewModel;
 
         public ViewHolder(View view) {
@@ -66,7 +69,9 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
 
         public void setup(RecipeViewModelInterface viewModel) {
             this.viewModel = viewModel;
+
             recipeNameTextView.setText(viewModel.getName());
+            recipeStepCountTextView.setText(viewModel.getRecipeCountText());
         }
 
         @Override

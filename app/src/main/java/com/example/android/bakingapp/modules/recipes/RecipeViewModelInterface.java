@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public interface RecipeViewModelInterface {
     String getName();
+    String getRecipeCountText();
     ArrayList<? extends IngredientViewModelInterface> getIngredients();
     ArrayList<? extends RecipeStepViewModelInterface> getSteps();
 }

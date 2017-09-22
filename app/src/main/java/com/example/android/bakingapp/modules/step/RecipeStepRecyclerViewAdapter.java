@@ -33,7 +33,7 @@ public class RecipeStepRecyclerViewAdapter extends RecyclerView.Adapter<RecipeSt
 
     @Override
     public void onBindViewHolder(RecipeStepRecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.setup(steps.get(position));
+        holder.setup(position, steps.get(position));
     }
 
     @Override
@@ -67,9 +67,13 @@ public class RecipeStepRecyclerViewAdapter extends RecyclerView.Adapter<RecipeSt
             view.setOnClickListener(this);
         }
 
-        public void setup(RecipeStepViewModelInterface step) {
+        public void setup(int position, RecipeStepViewModelInterface step) {
             this.step = step;
-            recipeStepShortDescriptionTextView.setText(step.getShortDescription());
+            recipeStepShortDescriptionTextView.setText(String.format(
+                "%s. %s",
+                position + 1,
+                step.getShortDescription()
+            ));
         }
 
         @Override
