@@ -8,12 +8,14 @@ import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.modules.ingredients.IngredientListFragment;
 import com.example.android.bakingapp.modules.ingredients.IngredientViewModelInterface;
+import com.example.android.bakingapp.modules.step.RecipeStepDetailActivity;
 import com.example.android.bakingapp.modules.step.RecipeStepDetailFragment;
 import com.example.android.bakingapp.modules.step.RecipeStepListFragment;
 import com.example.android.bakingapp.modules.step.RecipeStepRecyclerViewAdapter;
@@ -88,7 +90,10 @@ public class RecipeDetailActivity extends AppCompatActivity
         if (recipeStepDetailFragment != null) {
             setupRecipeStepDetailFragment(step);
         } else {
-            // We're on mobile, let's start new activity
+            Intent intent = new Intent(this, RecipeStepDetailActivity.class);
+            intent.putExtra(Intent.EXTRA_INTENT, Parcels.wrap(step));
+
+            startActivity(intent);
         }
     }
 }
