@@ -45,6 +45,7 @@ public class RecipeStepDetailFragment extends Fragment {
     TextView recipeStepDescriptionTextView;
 
     RecipeStepViewModelInterface step;
+    SimpleExoPlayer player;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -81,32 +82,39 @@ public class RecipeStepDetailFragment extends Fragment {
             setupVideoPlayer(step);
         } else {
             videoContainer.setVisibility(View.INVISIBLE);
+            ViewGroup.LayoutParams layoutParams = videoContainer.getLayoutParams();
+            layoutParams.height = 0;
+            videoContainer.setLayoutParams(layoutParams);
         }
 
         recipeStepDescriptionTextView.setText(step.getDescription());
     }
 
     private void setupVideoPlayer(RecipeStepViewModelInterface step) {
-        // 1. Create a default TrackSelector
-        Handler mainHandler = new Handler();
         Context context = getContext();
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
-        // 2. Create the player
-        SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
+        if (player == null) {
+            // Create a default TrackSelector
+            Handler mainHandler = new Handler();
+            BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+            TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+            TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+
+            // Create the player
+            player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
+        }
 
         videoContainer.setPlayer(player);
 
         // Produces DataSource instances through which media data is loaded.
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(
-                context,
-                Util.getUserAgent(context, "BakingApp")
+            context,
+            Util.getUserAgent(context, "BakingApp")
         );
 
         // Produces Extractor instances for parsing the media data.
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+
         // This is the MediaSource representing the media to be played.
         MediaSource videoSource = new ExtractorMediaSource(
             step.getVideoUri(),
@@ -117,5 +125,16 @@ public class RecipeStepDetailFragment extends Fragment {
         );
 
         player.prepare(videoSource);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (player != null) {
+            player.stop();
+            player.release();
+            player = null;
+        }
     }
 }
