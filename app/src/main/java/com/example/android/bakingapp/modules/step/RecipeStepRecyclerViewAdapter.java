@@ -51,7 +51,7 @@ public class RecipeStepRecyclerViewAdapter extends RecyclerView.Adapter<RecipeSt
     }
 
     public interface OnClickHandler {
-        public void onRecipeStepClicked(RecipeStepViewModelInterface step);
+        public void onRecipeStepClicked(int position, RecipeStepViewModelInterface step);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -59,6 +59,7 @@ public class RecipeStepRecyclerViewAdapter extends RecyclerView.Adapter<RecipeSt
         TextView recipeStepShortDescriptionTextView;
 
         RecipeStepViewModelInterface step;
+        int position;
 
         public ViewHolder(View view) {
             super(view);
@@ -69,16 +70,23 @@ public class RecipeStepRecyclerViewAdapter extends RecyclerView.Adapter<RecipeSt
 
         public void setup(int position, RecipeStepViewModelInterface step) {
             this.step = step;
-            recipeStepShortDescriptionTextView.setText(String.format(
-                "%s. %s",
-                position + 1,
-                step.getShortDescription()
-            ));
+            this.position = position;
+
+            // Position 0 is recipe introduction
+            if (position == 0){
+                recipeStepShortDescriptionTextView.setText(step.getShortDescription());
+            } else {
+                recipeStepShortDescriptionTextView.setText(String.format(
+                    "%s. %s",
+                    position,
+                    step.getShortDescription()
+                ));
+            }
         }
 
         @Override
         public void onClick(View view) {
-            onClickHandler.onRecipeStepClicked(step);
+            onClickHandler.onRecipeStepClicked(position, step);
         }
     }
 }

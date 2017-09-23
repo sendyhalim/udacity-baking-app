@@ -2,4 +2,6 @@
     <string name="app_name">BakingApp</string>
     <string name="ingredientListHeader">Ingredients</string>
     <string name="recipeStepListHeader">Steps</string>
+    <string name="previousStep">Previous Step</string>
+    <string name="nextStep">Next Step</string>
 </resources>

@@ -3,25 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <ScrollView
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        android:id="@+id/videoContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-                android:id="@+id/videoContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:resize_mode="fixed_width">
-            </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
+        android:layout_height="wrap_content"
+        app:resize_mode="fixed_width">
+    </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
 
-            <TextView
-                android:id="@+id/recipeStepDescriptionTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/videoContainer"
-                android:layout_marginTop="@dimen/viewMargin" />
-        </android.support.constraint.ConstraintLayout>
-    </ScrollView>
+    <TextView
+        android:id="@+id/recipeStepDescriptionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/videoContainer"
+        android:layout_margin="@dimen/viewMargin" />
 </android.support.constraint.ConstraintLayout>

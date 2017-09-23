@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -33,9 +32,12 @@ import butterknife.ButterKnife;
 
 public class RecipeDetailActivity extends AppCompatActivity
     implements RecipeStepRecyclerViewAdapter.OnClickHandler {
+    static final String CURRENT_INDEX_BUNDLE_KEY = "RECIPE_CURRENT_INDEX";
+    static final String RECIPES_BUNDLE_KEY = "RECIPES";
 
     RecipeStepDetailFragment recipeStepDetailFragment;
     ArrayList<RecipeViewModelInterface> recipes;
+    ArrayList<RecipeStepViewModelInterface> steps;
 
     @BindView(R.id.toPreviousRecipeButton)
     Button toPreviousRecipeButton;
@@ -43,10 +45,18 @@ public class RecipeDetailActivity extends AppCompatActivity
     @BindView(R.id.toNextRecipeButton)
     Button toNextRecipeButton;
 
-    @BindView(R.id.recipeListScrollView)
-    ScrollView recipeListScrollView;
+    @BindView(R.id.recipeDetailScrollView)
+    ScrollView recipeDetailScrollView;
 
     int currentIndex;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(RECIPES_BUNDLE_KEY, Parcels.wrap(recipes));
+        outState.putInt(CURRENT_INDEX_BUNDLE_KEY, currentIndex);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,14 +64,18 @@ public class RecipeDetailActivity extends AppCompatActivity
         setContentView(R.layout.recipe_detail);
         ButterKnife.bind(this);
 
-        Intent intent = getIntent();
-        currentIndex = intent.getIntExtra(Intent.EXTRA_INDEX, 0);
-        recipes = Parcels.unwrap(intent.getParcelableExtra(Intent.EXTRA_INTENT));
+        if (savedInstanceState != null) {
+            currentIndex = savedInstanceState.getInt(CURRENT_INDEX_BUNDLE_KEY);
+            recipes = Parcels.unwrap(savedInstanceState.getParcelable(RECIPES_BUNDLE_KEY));
+        } else {
+            Intent intent = getIntent();
+            currentIndex = intent.getIntExtra(Intent.EXTRA_INDEX, 0);
+            recipes = Parcels.unwrap(intent.getParcelableExtra(Intent.EXTRA_INTENT));
+        }
+
         RecipeViewModelInterface recipeViewModel = recipes.get(currentIndex);
 
-        if (intent.hasExtra(Intent.EXTRA_INTENT) && savedInstanceState == null) {
-            setup(recipeViewModel);
-        }
+        setup(recipeViewModel);
 
         toPreviousRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +90,6 @@ public class RecipeDetailActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 currentIndex = Math.min(recipes.size() - 1, currentIndex + 1);
-                Log.i("ADDING INDEX", "" + currentIndex);
 
                 RecipeViewModelInterface recipeViewModel = recipes.get(currentIndex);
                 setup(recipeViewModel);
@@ -85,7 +98,7 @@ public class RecipeDetailActivity extends AppCompatActivity
     }
 
     private void setup(RecipeViewModelInterface recipeViewModel) {
-        recipeListScrollView.scrollTo(0, 0);
+        recipeDetailScrollView.scrollTo(0, 0);
 
         if (currentIndex > 0) {
             toPreviousRecipeButton.setText(recipes.get(currentIndex - 1).getName());
@@ -103,6 +116,8 @@ public class RecipeDetailActivity extends AppCompatActivity
 
         FragmentManager fragmentManager = getFragmentManager();
 
+        setTitle(recipeViewModel.getName());
+
         // Setup ingredient list fragment
         ArrayList<IngredientViewModelInterface> ingredients = (ArrayList<IngredientViewModelInterface>) recipeViewModel.getIngredients();
 
@@ -116,7 +131,7 @@ public class RecipeDetailActivity extends AppCompatActivity
         ingredientListFragment.setIngredients(ingredients);
 
         // Setup recipe step list fragment
-        ArrayList<RecipeStepViewModelInterface> steps = (ArrayList<RecipeStepViewModelInterface>) recipeViewModel.getSteps();
+        steps = (ArrayList<RecipeStepViewModelInterface>) recipeViewModel.getSteps();
         RecipeStepListFragment recipeStepListFragment = new RecipeStepListFragment();
         recipeStepListFragment.setOnRecipeStepClickHandler(this);
 
@@ -137,18 +152,19 @@ public class RecipeDetailActivity extends AppCompatActivity
         recipeStepDetailFragment.setRecipeStep(step);
 
         getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.recipeStepDetailFragmentContainer, recipeStepDetailFragment)
-                .commit();
+            .beginTransaction()
+            .replace(R.id.recipeStepDetailFragmentContainer, recipeStepDetailFragment)
+            .commit();
     }
 
     @Override
-    public void onRecipeStepClicked(RecipeStepViewModelInterface step) {
+    public void onRecipeStepClicked(int position, RecipeStepViewModelInterface step) {
         if (recipeStepDetailFragment != null) {
             setupRecipeStepDetailFragment(step);
         } else {
             Intent intent = new Intent(this, RecipeStepDetailActivity.class);
-            intent.putExtra(Intent.EXTRA_INTENT, Parcels.wrap(step));
+            intent.putExtra(Intent.EXTRA_INTENT, Parcels.wrap(steps));
+            intent.putExtra(Intent.EXTRA_INDEX, position);
 
             startActivity(intent);
         }

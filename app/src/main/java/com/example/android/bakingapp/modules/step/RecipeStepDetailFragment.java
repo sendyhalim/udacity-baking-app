@@ -29,13 +29,14 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecipeStepDetailFragment extends Fragment {
-    public static final String BUNDLE_DATA_KEY = "RECIPE_STEP_DATA";
+    public static final String STEP_BUNDLE_KEY = "RECIPE_STEP_DATA";
 
     @BindView(R.id.videoContainer)
     SimpleExoPlayerView videoContainer;
@@ -49,7 +50,7 @@ public class RecipeStepDetailFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable(BUNDLE_DATA_KEY, Parcels.wrap(step));
+        outState.putParcelable(STEP_BUNDLE_KEY, Parcels.wrap(step));
     }
 
     @Nullable
@@ -63,7 +64,7 @@ public class RecipeStepDetailFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         if (savedInstanceState != null) {
-            step = Parcels.unwrap(savedInstanceState.getParcelable(BUNDLE_DATA_KEY));
+            step = Parcels.unwrap(savedInstanceState.getParcelable(STEP_BUNDLE_KEY));
         }
 
         setup();
@@ -77,7 +78,7 @@ public class RecipeStepDetailFragment extends Fragment {
 
     private void setup() {
         if (step.getVideoUri() != null) {
-            setupVideoPlayer();
+            setupVideoPlayer(step);
         } else {
             videoContainer.setVisibility(View.INVISIBLE);
         }
@@ -85,7 +86,7 @@ public class RecipeStepDetailFragment extends Fragment {
         recipeStepDescriptionTextView.setText(step.getDescription());
     }
 
-    private void setupVideoPlayer() {
+    private void setupVideoPlayer(RecipeStepViewModelInterface step) {
         // 1. Create a default TrackSelector
         Handler mainHandler = new Handler();
         Context context = getContext();
@@ -108,11 +109,11 @@ public class RecipeStepDetailFragment extends Fragment {
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         // This is the MediaSource representing the media to be played.
         MediaSource videoSource = new ExtractorMediaSource(
-                step.getVideoUri(),
-                dataSourceFactory,
-                extractorsFactory,
-                null,
-                null
+            step.getVideoUri(),
+            dataSourceFactory,
+            extractorsFactory,
+            null,
+            null
         );
 
         player.prepare(videoSource);
