@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.modules.common.ui.ItemOffsetDecoration;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 
 import butterknife.BindDimen;
 import butterknife.BindInt;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,8 +30,14 @@ import retrofit2.Response;
 import static android.support.v7.widget.RecyclerView.*;
 
 public class RecipeListFragment extends Fragment implements RecipeRecyclerViewAdapter.OnClickHandler {
-    @BindInt(R.integer.recipeListSpanCount)
+    @BindInt(R.integer.recipeGridSpanCount)
     int spanCount;
+
+    @BindView(R.id.recipeRecyclerView)
+    RecyclerView recipeRecyclerView;
+
+    @BindView(R.id.recipeListProgressBar)
+    ProgressBar recipeListProgressBar;
 
     RecipeAPI api;
     ArrayList<RecipeViewModelInterface> recipes;
@@ -45,18 +53,18 @@ public class RecipeListFragment extends Fragment implements RecipeRecyclerViewAd
         @Nullable ViewGroup container,
         Bundle savedInstanceState
     ) {
-        final RecyclerView rootView = (RecyclerView) inflater.inflate(R.layout.recipe_list_fragment, container, false);
+        final View rootView = inflater.inflate(R.layout.recipe_list_fragment, container, false);
         ButterKnife.bind(this, rootView);
 
         final RecipeRecyclerViewAdapter adapter = new RecipeRecyclerViewAdapter();
         final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), spanCount);
 
-        rootView.addItemDecoration(new ItemOffsetDecoration(getContext(), R.dimen.collectionItemMargin));
+        recipeRecyclerView.addItemDecoration(new ItemOffsetDecoration(getContext(), R.dimen.collectionItemMargin));
 
         adapter.setOnClickHandler(this);
         adapter.setRecipes(new ArrayList<RecipeViewModelInterface>());
-        rootView.setAdapter(adapter);
-        rootView.setLayoutManager(layoutManager);
+        recipeRecyclerView.setAdapter(adapter);
+        recipeRecyclerView.setLayoutManager(layoutManager);
 
         api.recipes().enqueue(new Callback<ArrayList<Recipe>>() {
             @Override
@@ -68,6 +76,8 @@ public class RecipeListFragment extends Fragment implements RecipeRecyclerViewAd
                 }
 
                 adapter.setRecipes(recipes);
+                recipeListProgressBar.setVisibility(INVISIBLE);
+                recipeRecyclerView.setVisibility(VISIBLE);
             }
 
             @Override
