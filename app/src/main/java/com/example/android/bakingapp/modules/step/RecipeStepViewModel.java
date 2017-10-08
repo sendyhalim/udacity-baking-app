@@ -6,6 +6,7 @@ import android.util.Log;
 
 import org.parceler.Parcel;
 import org.parceler.ParcelConstructor;
+import org.w3c.dom.Text;
 
 @Parcel
 public class RecipeStepViewModel implements RecipeStepViewModelInterface {
@@ -32,5 +33,29 @@ public class RecipeStepViewModel implements RecipeStepViewModelInterface {
         }
 
         return Uri.parse(recipeStep.videoURL);
+    }
+
+    @Override
+    public Boolean hasVideo() {
+        return !TextUtils.isEmpty(recipeStep.videoURL);
+    }
+
+    @Override
+    public Boolean hasThumbnail() {
+        return !TextUtils.isEmpty(recipeStep.thumbnailURL);
+    }
+
+    @Override
+    public Uri getThumbnailUri() {
+        if (TextUtils.isEmpty(recipeStep.thumbnailURL)) {
+            return null;
+        }
+
+        return Uri.parse(recipeStep.thumbnailURL);
+    }
+
+    @Override
+    public Uri getDefaultMediaPicture() {
+        return Uri.parse("http://www.luxuryroomdecor.com/mediaimages/kitchen_table_top_view816758858.jpg");
     }
 }

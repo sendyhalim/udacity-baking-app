@@ -2,12 +2,15 @@ package com.example.android.bakingapp.modules.step;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.bakingapp.R;
@@ -27,6 +30,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
@@ -38,6 +42,9 @@ public class RecipeStepDetailFragment extends Fragment {
 
     @BindView(R.id.videoContainer)
     SimpleExoPlayerView videoContainer;
+
+    @BindView(R.id.defaultMediaImageView)
+    ImageView defaultMediaImageView;
 
     @BindView(R.id.recipeStepDescriptionTextView)
     TextView recipeStepDescriptionTextView;
@@ -76,20 +83,31 @@ public class RecipeStepDetailFragment extends Fragment {
     }
 
     private void setup() {
-        if (step.getVideoUri() != null) {
+        // The thumbnail uri contains mp4 instead of image, so we'll load it into the video player
+        if (step.hasVideo() || step.hasThumbnail()) {
             setupVideoPlayer(step);
         } else {
             videoContainer.setVisibility(View.INVISIBLE);
             ViewGroup.LayoutParams layoutParams = videoContainer.getLayoutParams();
             layoutParams.height = 0;
             videoContainer.setLayoutParams(layoutParams);
+
+            // Setup default view
+            defaultMediaImageView.setVisibility(View.VISIBLE);
+            Picasso
+                .with(getContext())
+                .load(step.getDefaultMediaPicture())
+                .into(defaultMediaImageView);
         }
 
         recipeStepDescriptionTextView.setText(step.getDescription());
     }
 
+
     private void setupVideoPlayer(RecipeStepViewModelInterface step) {
         Context context = getContext();
+
+        videoContainer.setVisibility(View.VISIBLE);
 
         if (player == null) {
             // Create a default TrackSelector
@@ -113,9 +131,10 @@ public class RecipeStepDetailFragment extends Fragment {
         // Produces Extractor instances for parsing the media data.
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 
+
         // This is the MediaSource representing the media to be played.
         MediaSource videoSource = new ExtractorMediaSource(
-            step.getVideoUri(),
+            step.hasVideo() ? step.getVideoUri() : step.getThumbnailUri(),
             dataSourceFactory,
             extractorsFactory,
             null,
