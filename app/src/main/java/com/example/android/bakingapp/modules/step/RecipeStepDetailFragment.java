@@ -30,8 +30,6 @@ import com.google.android.exoplayer2.util.Util;
 
 import org.parceler.Parcels;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -128,13 +126,18 @@ public class RecipeStepDetailFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
+        cleanupPlayer();
+    }
 
-        if (player != null) {
-            player.stop();
-            player.release();
-            player = null;
+    private void cleanupPlayer() {
+        if (player == null) {
+            return;
         }
+
+        player.stop();
+        player.release();
+        player = null;
     }
 }
