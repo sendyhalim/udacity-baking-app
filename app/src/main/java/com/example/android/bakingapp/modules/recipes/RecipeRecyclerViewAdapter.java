@@ -5,9 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.bakingapp.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -52,6 +54,9 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @BindView(R.id.recipeImageView)
+        ImageView recipeImageView;
+
         @BindView(R.id.recipeNameTextView)
         TextView recipeNameTextView;
 
@@ -74,6 +79,15 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
 
             recipeNameTextView.setText(viewModel.getName());
             recipeStepCountTextView.setText(viewModel.getRecipeCountText());
+
+            if (viewModel.hasImage()) {
+                recipeImageView.setVisibility(View.VISIBLE);
+
+                Picasso
+                    .with(this.itemView.getContext())
+                    .load(viewModel.getImageUri())
+                    .into(recipeImageView);
+            }
         }
 
         @Override

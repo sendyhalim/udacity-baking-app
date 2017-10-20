@@ -1,5 +1,8 @@
 package com.example.android.bakingapp.modules.recipes;
 
+import android.net.Uri;
+import android.text.TextUtils;
+
 import com.example.android.bakingapp.modules.ingredients.Ingredient;
 import com.example.android.bakingapp.modules.ingredients.IngredientViewModel;
 import com.example.android.bakingapp.modules.ingredients.IngredientViewModelInterface;
@@ -40,6 +43,18 @@ public class RecipeViewModel implements RecipeViewModelInterface {
 
     public String getRecipeCountText() {
         return steps.size() + " Steps";
+    }
+
+    public Boolean hasImage() {
+        return !TextUtils.isEmpty(recipe.imageURL);
+    }
+
+    public Uri getImageUri() {
+        if (TextUtils.isEmpty(recipe.imageURL)) {
+            return null;
+        }
+
+        return Uri.parse(recipe.imageURL);
     }
 
     public ArrayList<? extends IngredientViewModelInterface> getIngredients() {

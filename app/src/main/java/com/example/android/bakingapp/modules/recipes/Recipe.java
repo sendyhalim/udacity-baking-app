@@ -1,5 +1,7 @@
 package com.example.android.bakingapp.modules.recipes;
 
+import android.net.Uri;
+
 import com.example.android.bakingapp.modules.ingredients.Ingredient;
 import com.example.android.bakingapp.modules.step.RecipeStep;
 
@@ -14,17 +16,20 @@ public class Recipe {
     public final String name;
     public final ArrayList<Ingredient> ingredients;
     public final ArrayList<RecipeStep> steps;
+    public final String imageURL;
 
     @ParcelConstructor
     public Recipe(
         int id,
         String name,
         ArrayList<Ingredient> ingredients,
-        ArrayList<RecipeStep> steps
+        ArrayList<RecipeStep> steps,
+        String imageURL
     ) {
         this.id = id;
         this.name = name;
         this.ingredients = ingredients;
         this.steps = steps;
+        this.imageURL = imageURL;
     }
 }

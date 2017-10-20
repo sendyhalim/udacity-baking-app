@@ -11,12 +11,19 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/viewMargin"
         android:layout_marginRight="@dimen/viewMargin">
+        <ImageView
+            android:id="@+id/recipeImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="invisible" />
+
         <TextView
             android:id="@+id/recipeNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/recipeImageView"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView

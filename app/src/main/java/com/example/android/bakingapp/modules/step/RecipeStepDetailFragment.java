@@ -84,8 +84,10 @@ public class RecipeStepDetailFragment extends Fragment {
 
     private void setup() {
         // The thumbnail uri contains mp4 instead of image, so we'll load it into the video player
-        if (step.hasVideo() || step.hasThumbnail()) {
+        if (step.hasVideo()) {
             setupVideoPlayer(step);
+        } else if (step.hasThumbnail()) {
+            setupThumbnail(step);
         } else {
             videoContainer.setVisibility(View.INVISIBLE);
             ViewGroup.LayoutParams layoutParams = videoContainer.getLayoutParams();
@@ -101,6 +103,26 @@ public class RecipeStepDetailFragment extends Fragment {
         }
 
         recipeStepDescriptionTextView.setText(step.getDescription());
+    }
+
+    private void setupThumbnail(RecipeStepViewModelInterface step) {
+        Uri uri = step.getThumbnailUri();
+        String url = uri.toString();
+        String extension = "";
+
+        int i = url.lastIndexOf('.');
+        if (i > 0) {
+            extension = url.substring(i + 1);
+        }
+
+        if (extension != "jpg" || extension != "png") {
+            return;
+        }
+
+        Picasso
+            .with(getContext())
+            .load(uri)
+            .into(defaultMediaImageView);
     }
 
 
@@ -131,10 +153,9 @@ public class RecipeStepDetailFragment extends Fragment {
         // Produces Extractor instances for parsing the media data.
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 
-
         // This is the MediaSource representing the media to be played.
         MediaSource videoSource = new ExtractorMediaSource(
-            step.hasVideo() ? step.getVideoUri() : step.getThumbnailUri(),
+            step.getVideoUri(),
             dataSourceFactory,
             extractorsFactory,
             null,
@@ -144,9 +165,10 @@ public class RecipeStepDetailFragment extends Fragment {
         player.prepare(videoSource);
     }
 
+
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onPause() {
+        super.onPause();
         cleanupPlayer();
     }
 
